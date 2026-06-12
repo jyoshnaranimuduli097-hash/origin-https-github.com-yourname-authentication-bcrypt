@@ -4,10 +4,10 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const session = require('express-session')
 const user = require('./model/database')
-
+require('dotenv').config()
 
 //connect database
-mongoose.connect('mongodb://127.0.0.1:27017/contactList')
+mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('Database Connected!'))
     .catch((err) => console.log(err))
 
@@ -38,22 +38,39 @@ app.get('/login', (req, res) => { res.render('login', { msg: null }) })
 app.get('/',isLogin, (req, res) => { res.send('hello <br> <a href="/logout">Logout</a>') })
 
 app.post('/registration', async (req, res) => {
-    const { email, password } = req.body
-    const hashedPassword = await bcrypt.hash(password, 10)
-    await user.create({ email, password: hashedPassword })
-     res.render('registration', {
-        msg: 'Registration Successful'
-    });
+    try {
+        const { email, password } = req.body
+        const hashedPassword = await bcrypt.hash(password, 10)
+        await user.create({ email, password: hashedPassword })
+
+        res.render('registration', {
+            msg: 'Registration Successful'
+        });
+    } catch (err) {
+        res.render('registration', {
+            msg: 'User already exists or error occurred'
+        });
+    }
 })
 
 app.post('/login', async (req, res) => {
-    const { email, password } = req.body
-    const user1 = await user.findOne({ email })
-    if (!user1) return res.render('login', { msg: 'User name not found' })
-    const isMatch = await bcrypt.compare( password , user1.password)
-    if (!isMatch) return res.render('login', { msg: 'wrong password' })
-    req.session.key =  email
+    try {
+        const { email, password } = req.body
+        const user1 = await user.findOne({ email })
+
+        if (!user1)
+            return res.render('login', { msg: 'User not found' })
+
+        const isMatch = await bcrypt.compare(password, user1.password)
+
+        if (!isMatch)
+            return res.render('login', { msg: 'Wrong password' })
+
+        req.session.key = email
         res.redirect('/')
+    } catch (err) {
+        res.send("Error occurred")
+    }
 })
 
 app.get('/logout',(req,res)=>{
@@ -63,6 +80,8 @@ app.get('/logout',(req,res)=>{
 })
 
 //connect to server
-app.listen(3000, () => {
-    console.log('connected to port: 3000')
+const PORT = process.env.PORT || 3000
+
+app.listen(PORT, () => {
+    console.log('Server running on port ' + PORT)
 })
