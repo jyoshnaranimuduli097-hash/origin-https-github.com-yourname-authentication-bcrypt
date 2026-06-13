@@ -9,10 +9,40 @@ const session = require('express-session')
 const user = require('./model/database')
 require('dotenv').config({ path: './pass.env' })
 
-// IMPORTANT FOR RENDER (fixes session issue)
+const fs = require('fs')
+const path = require('path')
+
+/* =========================
+   TRUST PROXY (RENDER FIX)
+========================= */
 app.set("trust proxy", 1)
 
-// connect database
+/* =========================
+   MIDDLEWARES
+========================= */
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.set('view engine', 'ejs')
+app.use(express.static('public'))
+
+/* =========================
+   SESSION CONFIG (FIXED)
+========================= */
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'mysecret',
+    resave: false,
+    saveUninitialized: false,
+    proxy: true,
+    cookie: {
+        secure: true,        // required for Render HTTPS
+        httpOnly: true,
+        sameSite: "none"     // required for cross-site cookies
+    }
+}))
+
+/* =========================
+   DB CONNECTION
+========================= */
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('Database Connected!'))
     .catch((err) => {
@@ -20,32 +50,19 @@ mongoose.connect(process.env.MONGO_URI)
         process.exit(1);
     })
 
-// session (FIXED FOR RENDER)
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'mysecret',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: true,        // MUST be true on Render (HTTPS)
-        httpOnly: true,
-        sameSite: "none"     // MUST be none for cross-site cookies
-    }
-}))
-
-// middlewares
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.set('view engine', 'ejs')
-app.use(express.static('public'))
-// login middleware
-let isLogin = (req, res, next) => {
-    if (req.session.key) {
+/* =========================
+   LOGIN MIDDLEWARE
+========================= */
+const isLogin = (req, res, next) => {
+    if (req.session && req.session.key) {
         return next();
     }
     res.redirect('/login');
 }
 
-// routes
+/* =========================
+   ROUTES
+========================= */
 app.get('/registration', (req, res) => {
     res.render('registration', { msg: null })
 })
@@ -54,24 +71,28 @@ app.get('/login', (req, res) => {
     res.render('login', { msg: null })
 })
 
-// home route
 app.get('/', isLogin, (req, res) => {
-    res.send('Termi maa ki')
-    //res.sendFile('next.html',{root:__dirname})
+    res.sendFile('next.html', { root: path.join(__dirname, 'public') })
 })
 
-// static file viewer route
+app.get('/next', isLogin, (req, res) => {
+    res.render('next')
+})
+
+/* =========================
+   STATIC FILE READER (FIXED)
+========================= */
 async function listStaticFiles(directory, base = '') {
-    const entries = await fs.readdir(directory, { withFileTypes: true })
-    const files = []
+    const entries = await fs.promises.readdir(directory, { withFileTypes: true })
+    let files = []
 
     for (const entry of entries) {
         const relPath = base ? path.posix.join(base, entry.name) : entry.name
         const fullPath = path.join(directory, entry.name)
 
         if (entry.isDirectory()) {
-            files.push(...await listStaticFiles(fullPath, relPath))
-        } else if (entry.isFile()) {
+            files = files.concat(await listStaticFiles(fullPath, relPath))
+        } else {
             files.push(relPath.replace(/\\/g, '/'))
         }
     }
@@ -81,7 +102,7 @@ async function listStaticFiles(directory, base = '') {
 
 app.get('/static-viewer', isLogin, async (req, res) => {
     try {
-        const fileList = await listStaticFiles(path.join(__dirname, 'pubic'))
+        const fileList = await listStaticFiles(path.join(__dirname, 'public')) // FIXED TYPO
         res.render('static-viewer', { files: fileList })
     } catch (err) {
         console.error('Static viewer error:', err)
@@ -89,60 +110,71 @@ app.get('/static-viewer', isLogin, async (req, res) => {
     }
 })
 
-// registration
+/* =========================
+   REGISTRATION
+========================= */
 app.post('/registration', async (req, res) => {
     try {
         const { email, password } = req.body
+
+        const existingUser = await user.findOne({ email })
+        if (existingUser) {
+            return res.render('registration', { msg: 'User already exists' })
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10)
         await user.create({ email, password: hashedPassword })
 
-        res.render('registration', {
-            msg: 'Registration Successful'
-        })
+        res.render('registration', { msg: 'Registration Successful' })
+
     } catch (err) {
-        console.log(err)
-        res.render('registration', {
-            msg: 'User already exists or error occurred'
-        })
+        console.error(err)
+        res.render('registration', { msg: 'Error occurred' })
     }
 })
 
-// login
+/* =========================
+   LOGIN
+========================= */
 app.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body
+
         const user1 = await user.findOne({ email })
 
-        if (!user1)
+        if (!user1) {
             return res.render('login', { msg: 'User not found' })
+        }
 
         const isMatch = await bcrypt.compare(password, user1.password)
 
-        if (!isMatch)
+        if (!isMatch) {
             return res.render('login', { msg: 'Wrong password' })
+        }
 
-        //  SESSION SET
-        req.session.key = email
+        // SESSION FIXED
+        req.session.key = user1._id.toString()
 
         res.redirect('/')
+
     } catch (err) {
         console.error(err)
-        res.send(err.message)
+        res.render('login', { msg: 'Error occurred' })
     }
 })
 
-// logout
+/* =========================
+   LOGOUT
+========================= */
 app.get('/logout', (req, res) => {
     req.session.destroy(() => {
         res.redirect('/login')
     })
 })
 
-app.get('/next',(req,res)=>{
-    res.render('next')
-})
-
-// server
+/* =========================
+   SERVER
+========================= */
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
