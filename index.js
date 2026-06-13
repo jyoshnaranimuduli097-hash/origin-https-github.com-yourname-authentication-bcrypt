@@ -36,7 +36,7 @@ app.use(session({
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.set('view engine', 'ejs')
-app.use(express.static(path.join(__dirname,'public'),{index:false}))
+app.use(express.static(path.join(__dirname,'public')))
 // login middleware
 let isLogin = (req, res, next) => {
     if (req.session.key) {
