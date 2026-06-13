@@ -1,0 +1,262 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+body{
+    background-color: black;
+}
+.main {
+    background-image: url(assets/nbg.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size:cover;
+    height: 96vh;
+    width: 100vw;
+    position: relative;
+    opacity: 0.;
+    box-shadow: inset 20px 50px 60px,inset -20px -5px 50px;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 60vw;
+    margin: auto;
+    height: 90px;
+    position: elative;
+}
+.fa-circle-check{
+    color: #22c55e;
+    border-radius: 50%;
+}
+
+.fa-circle-xmark{
+    color: #ef4444;
+}
+.logo img {
+    height: 110px;
+    position: asolute;
+}
+.btn{
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+}
+.btn:focus-visible{
+    outline: none;
+}
+
+.red-btn{
+    background-color: rgb(248, 24, 24);
+    font-size: 16px;
+    font-weight: bold;
+     padding:5px 15px;
+    border: 1px solid rgb(25, 0, 0);
+    border-radius: 5px;
+    color: white;
+}
+.lang-btn{
+    background-color: transparent;
+    border:1px solid rgba(255, 255, 255, 0.427);
+    border-radius: 6px;
+    color: white;
+    font-size: 18px;
+    padding:2px 20px;
+    margin-right: 10px;
+}
+.hero{
+    color:white;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content:center;
+    background-color:none;
+    height:90vh;
+    line-height:8vh ;
+    width:30vw;
+    margin: auto;
+    text-align: center;
+    width: 80%;
+    max-width: 900px
+   
+}
+.big{
+    font-size:60px;
+    font-weight: bolder;
+}
+.small{
+    font-size:px;
+    width:100vw;
+}
+.b{
+    font-size: 25px;
+}
+.start{
+    width: 100vw;
+    align-items: center;
+    justify-content: center;
+}
+#email,#otp{
+    background-color: rgba(43, 42, 42, 0.517);
+    padding:15px 250px 15px 10px;
+    color: white;
+    font-size: 20px;
+    border:1px solid rgba(255, 255, 255, 0.419);
+    border-radius:9px;
+    
+}
+#otp{
+    display: none;
+}
+
+#msg{
+ height: 0px;
+}
+.btn-red{
+    background-color: rgb(248, 24, 24);
+    color: aliceblue;
+    font-weight: bold;
+    font-size:20px ;
+    padding:15px 30px;
+    margin-left: 15px;
+    border: none;
+    border-radius: 9px;
+
+}
+.glw img{
+    width: 100vw;
+    position: relative;
+    bottom:-270px;
+    opacity: 0.8;
+    
+
+}
+.start{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.small{
+    width:auto;
+}
+
+#email,
+#otp{
+    padding:15px;
+    width:350px;
+    max-width:90%;
+}
+@media (max-width:760px){
+    .flx{
+    width: 100%;
+}
+#msg{
+ height:auto;
+}
+
+    .main{
+        height: 100vh;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .flex{
+        width: 95%;
+        margin: auto;
+        justify-content: space-between;
+    }
+
+    .logo img{
+        height: 70px;
+        position: static;
+    }
+
+    .btns{
+        position: static;
+        display: flex;
+        align-items: center;
+    }
+
+    .hero{
+        width: 90%;
+        height: auto;
+        margin: 50px auto;
+        line-height: normal;
+        gap: 15px;
+    }
+
+    .big{
+        position: static;
+        width: 100%;
+        font-size: 35px;
+        line-height: 45px;
+    }
+
+    .b{
+        position: static;
+        font-size: 18px;
+    }
+
+    .small{
+        position: static;
+        width: 100%;
+        font-size: 14px;
+        line-height: 22px;
+    }
+
+    .start{
+        position: static;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+    }
+
+    #email,
+    #otp{
+        position: static;
+        width: 90%;
+        max-width: 350px;
+        padding: 14px;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+
+    #otp{
+        display: none;
+    }
+
+    .btn-red{
+        width: 90%;
+        max-width: 350px;
+        margin-left: 0;
+        padding: 14px;
+        font-size: 18px;
+    }
+
+    #msg{
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .red-btn{
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    .lang-btn{
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+
+}

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Netflix Home</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="next.css">
+</head>
+
+<body>
+  <div id="loader">
+
+    <style>
+      body {
+        margin: 0;
+        background: black;
+
+      }
+
+      #loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+
+        background: black;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        transition: opacity 0.5s ease;
+        z-index: 9999;
+      }
+
+      #loader.hide {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .loader {
+        height: 100px;
+        width: 100px;
+
+        border: 8px solid #ddd;
+        border-top: 8px solid red;
+        border-right-color: red;
+
+        border-radius: 50%;
+
+        animation: rotate 1s linear infinite;
+
+        position: absolute;
+        top: 40vh;
+      }
+
+      .loader img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: contain;
+      }
+
+      @keyframes rotate {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    </head>
+
+    <body>
+
+      <div id="loader">
+
+        <div class="loader">
+          <img src="assets/netflix.jpg" alt="">
+        </div>
+
+      </div>
+  </div>
+
+  <header class="navbar">
+
+    <a href="next.html" style="text-decoration: none;">
+      <div class="logo">NETFLIX</div>
+    </a>
+
+    <nav>
+      <div class="search-container">
+
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+
+        <input type="text" id="searchinput" placeholder="Search here" onkeyup="searchContent()">
+      </div>
+      <a href="next.html">Home</a>
+      <a href="#">TV Shows</a>
+      <a href="#">Movies</a>
+      <a href="#">New & Popular</a>
+    </nav>
+
+    <a href="pfp.html">
+      <div><img class="profile" src="assets/pfp.jpg" alt=""></div>
+
+    </a>
+    <div id="khoj">
+      <input type="checkbox" id="check">
+      <label for="check"><span id="btn">☰</span></label>
+      <label for="check"><span id="cancel">✖</span></label>
+      <div class="sidebar">
+        <a href="#"><span>Home</span></a>
+        <a href="#"><span>Tv show</span></a>
+        <a href="#"><span>Movies</span></a>
+        <a href="#"><span>New & Popular</span></a>
+        <a href="#"><span onclick="logout()"> ⇦ Logout</span></a>
+        <a href="pfp.html" id="dp">
+          <div class="dp">
+            <img src="assets/pfp.jpg" alt="">
+          </div>
+          <div class="info">
+            profile
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+  </header>
+
+
+  <section class="hero">
+
+    <div class="slides">
+
+      <div class="slide active">
+        <img src="assets/p1.jpg" class="rotate" />
+        <div class="overlay"></div>
+
+        <div class="content">
+
+
+
+          <h1>Dark Horizon</h1>
+          <p>
+            A sci-fi thriller where AI controls humanity.
+
+          </p>
+          <button onclick="play('https://archive.org/embed/the-batman-2022-main-trailer-4k-prores?autoplay=1&mute=1')">
+            ▶ Play
+          </button>
+
+        </div>
+      </div>
+
+      <div class="slide">
+        <img src="assets/p2.jpg" />
+        <div class="overlay"></div>
+
+        <div class="content">
+
+          <h1>Peaky Blinders</h1>
+          <p>
+            Enter the future of neon and machines.
+          </p>
+          <button onclick="play('https://www.youtube.com/embed/lcvUGs3xaDM?si=wpCn9EVjKoRmXhgL?autoplay=1&mute=1')">
+            ▶ Play
+          </button>
+
+
+        </div>
+      </div>
+
+      <div class="slide">
+        <img src="assets/p3.jpg" />
+        <div class="overlay"></div>
+
+        <div class="content">
+
+          <h1>DEADPOOL</h1>
+          <p>
+            Mission impossible
+          </p>
+          <button onclick="play('https://archive.org/embed/youtube-3a8yXStofag?autoplay=1&mute=1')">
+            ▶ Play
+          </button>
+
+        </div>
+      </div>
+      <div class="slide">
+        <img src="assets/p4.jpg" />
+        <div class="overlay"></div>
+
+        <div class="content">
+
+          <h1>CAPTAIN AMERICA</h1>
+          <p>
+            Stand for right, even alone.
+          </p>
+          <button
+            onclick="play('https://archive.org/embed/bliptv-20131013-214804-Blacktreetv-CaptainAmericaTrailerHD513?autoplay=1&mute=1')">
+            ▶ Play
+          </button>
+
+        </div>
+      </div>
+      <div class="slide">
+        <img src="assets/p5.jpg" />
+        <div class="overlay"></div>
+
+        <div class="content">
+
+          <h1 class="x">VENOM</h1>
+          <p V>
+            We are stronger together
+          </p>
+
+          <button onclick="play('https://archive.org/embed/youtube--LoYRAnFW4M?autoplay=1&mute=1')">
+            ▶ Play
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+
+  <section class="row st" id="1st-row">
+    <h2>Movies</h2>
+    <div class="cards" id="movie_Container"></div>
+  </section>
+
+  <section class="row">
+    <h2>Anime</h2>
+
+    <div class="cards">
+      <button onclick="save(
+        'Attack On Titan','assets/prev6.jpg','https://archive.org/embed/turner_video_132463?autoplay=1&mute=1','Set in a world where humanity hides behind towering walls to survive against man-eating giants, Attack on Titan follows Eren Yeager and the Survey Corps. What begins as a fight'
+      )">
+        <div class="card  item" data-name="Attack On Titan"><img src="assets/a1.jpg"></div>
+      </button>
+
+      <button onclick="save(
+        'DEMON SLAYER','assets/prev7.jpg','https://archive.org/embed/demon-slayer-trailer-hindi-dub-jio-hotstar-1080p?autoplay=1&mute=1','Demon Slayer: Kimetsu no Yaiba follows Tanjiro Kamado, a kind-hearted teen who joins a secret corps of warriors to avenge his family’s murder. When his sister, Nezuko, is transformed into a demon, Tanjiro '
+      )">
+        <div class="card  item" data-name="DEMON SLAYER"><img src="assets/a2.jpg"></div>
+      </button>
+
+      <button onclick="save(
+        'deathnote','assets/prev8.jpg','https://archive.org/embed/h-264_202311?autoplay=1&mute=1','Death Note is a psychological thriller about Light Yagami, a brilliant student who finds a supernatural notebook that kills anyone whose name is written in its pages'
+      )">
+        <div class="card  item" data-name="deathnote"><img src="assets/a3.jpg"></div>
+      </button>
+
+      <button onclick="save(
+        'Jujutsu Kaisen','assets/prev9.jpg','https://archive.org/embed/9convert.com-gojo-alors-on-dance-edit-amv-x-sense-remake-1080p?autoplay=1&mute=1','Jujutsu Kaisen is a dark fantasy anime about Yuji Itadori, a high schooler who becomes the vessel for the powerful demon Ryomen Sukuna. To prevent global destruction, Yuji joins secret sorcerers to find and consume all twenty of Sukunas fingers. '
+      )">
+        <div class="card  item" data-name="Jujutsu Kaisen"><img src="assets/a4.jpg"></div>
+      </button>
+
+      <button onclick="save(
+        'Naruto','assets/prev10.jpg','https://archive.org/embed/g4tv.com-video48136?autoplay=1&mute=1','Naruto Uzumaki is an energetic, optimistic orphan from the Hidden Leaf Village who dreams of becoming the Hokage—the villages strongest ninja and leader. '
+      )">
+        <div class="card  item" data-name="Naruto"><img src="assets/a5.jpg"></div>
+      </button>
+
+
+    </div>
+  </section>
+
+  <section class="row">
+    <h2>Web Series</h2>
+
+    <div class="cards">
+      <button onclick="save(
+        'Scam 1992','assets/prev11.avif','https://www.youtube.com/embed/C81nqlBD3wg?si=58U0hhHI9TX5CLSY','Scam 1992 is a financial web series chronicling the 1992 Indian stock market scandal. Broker Harshad Mehta exploited loopholes in the banking system to divert bank funds and artificially inflate stock prices. His eventual exposure triggered a massive market crash.'
+      )">
+        <div class="card  item" data-name="Scam"><img src="assets/w1.jpg"></div>
+      </button>
+
+      <button onclick="save(
+        'Money Heist','assets/prev12.jpg','https://archive.org/embed/money-heist-part-4-official-trailer-netflix?autoplay=1&mute=1','Eight thieves lock themselves in the Royal Mint of Spain to pull off the biggest heist in history. Led by the Professor, they orchestrate an epic multi-day robbery while manipulating police forces across the globe.'
+      )">
+        <div class="card  item" data-name="Money Heist"><img src="assets/w3.jpg"></div>
+      </button>
+
+      <button onclick="save(
+        'Squid Game','assets/prev13.jpg','https://archive.org/embed/youtube-FoLnLM23Qak?autoplay=1&mute=1','Hundreds of desperate cash-strapped contestants accept a strange invitation to compete in children games. They risk their lives for a massive financial prize in a thrilling deadly tournament filled with shocking twists and dark betrayal.'
+      )">
+        <div class="card  item" data-name="Squid Game"><img src="assets/w4.jpg"></div>
+      </button>
+
+      <button onclick="save(
+        'The Witcher','assets/prev14.jpg','https://archive.org/embed/the-witcher-demons-bridge-fanfilm?autoplay=1&mute=1','The Witcher is a dark fantasy saga following Geralt of Rivia, a mutated monster hunter for hire. Navigating a morally corrupt world, he battles deadly beasts and dangerous politics to protect his loved ones.'
+      )">
+        <div class="card  item" data-name="The Witcher"><img src="assets/w5.jpg"></div>
+      </button>
+
+      <button onclick="save(
+        'Lucifer','assets/prev15.jpg','https://www.youtube.com/embed/h4syfc-m7tA?si=7UW7avMy-zbyTzfH','Embittered by his heavenly banishment, the charming Lord of Hell abandons his throne to run a Los Angeles nightclub. He soon finds himself assisting a dedicated homicide detective in solving crimes and punishing local evildoers.'
+      )">
+        <div class="card  item" data-name="Lucifer"><img src="assets/w6.jpg"></div>
+      </button>
+
+      <button onclick="save(
+        'money heist 2','assets/prev12.jpg','https://archive.org/embed/money-heist-2017-trailer?autoplay=1&mute=1','Money Heist wrapped up its main story in 2021, but the revolution continues. Explore the expanded universe on Netflix. The thrilling franchise follows masterminds executing impossible robberies while battling pol'
+      )">
+        <div class="card  item" data-name="money heist 2"><img src="assets/w2.jpg"></div>
+      </button>
+
+
+
+    </div>
+  </section>
+
+  <section class="row">
+    <h2>Cartoons</h2>
+
+    <div class="cards">
+      <button onclick="save(
+        'Minions','assets/prev16.jpg','https://archive.org/embed/youtube-P9-FCC6I7u0?autoplay=1&mute=1','These wildly popular, yellow, pill-shaped henchmen are famous for their chaotic personalities, gibberish language, and unwavering loyalty to Gru. Their hilarious antics, mischievous nature, and love for bananas make them incredibly fun and entertaining characters.'
+      )">
+        <div class="card  item" data-name="minions"><img src="assets/c1.jpg"></div>
+      </button>
+
+      <button onclick="save(
+        'The Boss Baby','assets/prev17.jpg','https://archive.org/embed/youtube-EMgfQMnPtTg?autoplay=1&mute=1','The Boss Baby follows a suit-wearing, briefcase-toting infant who teams up with his older brother. Together, they embark on a hilarious secret mission to stop a devious plot by the CEO of Puppy Co.'
+      )">
+        <div class="card  item" data-name="the boss baby"><img src="assets/c2.jpg"></div>
+      </button>
+
+      <button onclick="save(
+        'Big Hero','assets/prev18.jpg','https://www.youtube.com/embed/z3biFxZIJOQ?si=lAWF9A2AHVB3qV4k','Brilliant robotics prodigy Hiro Hamada forms an unbreakable bond with inflatable healthcare bot Baymax. Together with a group of clever friends, they transform into a high-tech superhero team to save their futuristic city from danger.'
+      )">
+        <div class="card  item" data-name="big hero"><img src="assets/c3.jpg"></div>
+      </button>
+
+      <button onclick="save(
+        'Zootopia','assets/prev19.jpg','https://www.youtube.com/embed/Xry6B0I3pT8?si=UnfzJ3geJwLCjIch','Welcome to the bustling metropolis of Zootopia where any animal can achieve their dreams. Join an optimistic rookie bunny cop and a sly con-artist fox as they team up to solve a thrilling, city-wide mystery.'
+      )">
+        <div class="card  item" data-name="zootopia"><img src="assets/c4.jpg"></div>
+      </button>
+
+      <button onclick="save(
+        'Kungfu Panda','assets/prev20.jpg','https://www.youtube.com/embed/Ni_tlxJuSis?si=PZBBUXybCbIJqZAf','Po, the clumsy panda, embraces his destiny as the Dragon Warrior. He must master martial arts to defend the Valley of Peace from formidable foes, discovering that true power comes from believing in his unique self.'
+      )">
+        <div class="card  item" data-name="kungfupanda"><img src="assets/c5.jpg"></div>
+      </button>
+
+    </div>
+  </section>
+
+  <section class="row">
+    <h2>News</h2>
+
+    <div class="cards">
+
+      <div class="card  item" data-name="news"><img src="assets/n1.jpg"></div>
+      <div class="card  item" data-name="news"><img src="assets/n2.jpg"></div>
+      <div class="card  item" data-name="news"><img src="assets/n3.jpg"></div>
+      <div class="card  item" data-name="news"><img src="assets/n4.jpg"></div>
+      <div class="card  item" data-name="news"><img src="assets/n5.jpg"></div>
+    </div>
+  </section>
+
+  <script src="next.js"></script>
+  <script src="prev.js"></script>
+  <script src="movie_insert.js"></script>
+  <script src="scrit.js"></script>
+  <script> 
+  //src -->vidplayer
+    function play(link) {
+      localStorage.setItem("movieLink", link);
+      window.location.href = "vidPlayer.html"
+    }
+    //loader
+    window.onload = function () {
+
+      setTimeout(() => {
+
+        document.getElementById("loader").classList.add("hide");
+
+      }, 200);
+
+    };
+    //checking logout
+    if (localStorage.getItem("loggedIn") !== "true") {
+      window.location.href = "index.html";
+    }
+    //remove loggedIn value
+    function logout() {
+      localStorage.removeItem("loggedIn");
+      window.location.href = "index.html";
+
+    }
+
+  </script>
+
+</body>
+
+</html>

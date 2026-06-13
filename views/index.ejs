@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My netflix</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+    <div class="main">
+        <nav class="flex">
+            <span class="logo"><img src="assets/Nlogo.png"> </span>
+            <div class="btns">
+                <button class="btn lang-btn"><b style="font-size: 18px;">友 </b>
+                    <select id="language" name="selctLang" class="btn">
+                        <option value="eng">English</option>
+                        <option value="hindi">हिंदी</option>
+                    </select>
+                </button>
+                <button class="btn red-btn">Sign in</button>
+            </div>
+        </nav>
+        <div class="hero">
+            <span class="big">Unlimited movies, shows, and more</span>
+            <span class="small b">Starts at ₹149. Cancel at any time.</span>
+            <span class="small">Ready to watch? Enter your email to create or restart your membership.</span>
+            <div class="start">
+                <div class="flx">
+                    <input type="email"  id="email" placeholder="Enter Gmail">
+                    <input type="text" id="otp" placeholder="Enter OTP">
+                    <p id="msg"></p>
+                </div>
+                    
+                    <button class="btn-red" onclick="A()">Get started &gt;</button>
+            </div>
+
+
+        </div>
+
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

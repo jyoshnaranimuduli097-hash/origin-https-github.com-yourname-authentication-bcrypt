@@ -9,7 +9,7 @@ const session = require('express-session')
 const user = require('./model/database')
 require('dotenv').config({ path: './pass.env' })
 
-// ✅ IMPORTANT FOR RENDER (fixes session issue)
+// IMPORTANT FOR RENDER (fixes session issue)
 app.set("trust proxy", 1)
 
 // connect database
@@ -56,7 +56,7 @@ app.get('/login', (req, res) => {
 
 // home route
 app.get('/', isLogin, (req, res) => {
-    res.send(`Hello ${req.session.key} <br> <a href="/logout">Logout</a>`)
+    res.render('index')
 })
 
 // registration
@@ -91,7 +91,7 @@ app.post('/login', async (req, res) => {
         if (!isMatch)
             return res.render('login', { msg: 'Wrong password' })
 
-        // ✅ SESSION SET
+        //  SESSION SET
         req.session.key = email
 
         res.redirect('/')
