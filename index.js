@@ -8,40 +8,31 @@ const bcrypt = require('bcryptjs')
 const session = require('express-session')
 const user = require('./model/database')
 require('dotenv').config({ path: './pass.env' })
-const fs = require('fs')
-const path = require('path')
 
-// IMPORTANT FOR RENDER (fixes session issue)
+// 🔥 IMPORTANT FOR RENDER (SESSION FIX)
 app.set("trust proxy", 1)
 
-// connect database
+//connect database
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('Database Connected!'))
     .catch((err) => {
         console.error('DB Connection Failed:', err);
-        process.exit(1);
+        process.exit(1); // Exit if DB fails
     })
 
-// session (FIXED FOR RENDER)
+//session (FIXED)
 app.use(session({
     secret: process.env.SESSION_SECRET || 'mysecret',
     resave: false,
     saveUninitialized: false,
-    proxy: true,   // 🔴 FIX ADDED (important for Render)
-    cookie: {
-        secure: true,
-        httpOnly: true,
-        sameSite: "none"
-    }
 }))
 
-// middlewares
+//all middlewares
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.set('view engine', 'ejs')
-app.use(express.static('public'))
-
-// login middleware
+app.use(express.static('pubic'))
+//my middleware(isLogin)
 let isLogin = (req, res, next) => {
     if (req.session.key) {
         return next();
@@ -49,7 +40,7 @@ let isLogin = (req, res, next) => {
     res.redirect('/login');
 }
 
-// routes
+//all routes
 app.get('/registration', (req, res) => {
     res.render('registration', { msg: null })
 })
@@ -58,41 +49,10 @@ app.get('/login', (req, res) => {
     res.render('login', { msg: null })
 })
 
-// home route (FIXED PATH ISSUE)
 app.get('/', isLogin, (req, res) => {
-    res.sendFile('next.html', { root: path.join(__dirname, 'public') })
+    res.render('next')
 })
 
-// static file viewer route
-async function listStaticFiles(directory, base = '') {
-    const entries = await fs.promises.readdir(directory, { withFileTypes: true })
-    const files = []
-
-    for (const entry of entries) {
-        const relPath = base ? path.posix.join(base, entry.name) : entry.name
-        const fullPath = path.join(directory, entry.name)
-
-        if (entry.isDirectory()) {
-            files.push(...await listStaticFiles(fullPath, relPath))
-        } else if (entry.isFile()) {
-            files.push(relPath.replace(/\\/g, '/'))
-        }
-    }
-
-    return files
-}
-
-app.get('/static-viewer', isLogin, async (req, res) => {
-    try {
-        const fileList = await listStaticFiles(path.join(__dirname, 'public')) // 🔴 FIXED TYPO
-        res.render('static-viewer', { files: fileList })
-    } catch (err) {
-        console.error('Static viewer error:', err)
-        res.status(500).send('Unable to load static file viewer')
-    }
-})
-
-// registration
 app.post('/registration', async (req, res) => {
     try {
         const { email, password } = req.body
@@ -101,16 +61,15 @@ app.post('/registration', async (req, res) => {
 
         res.render('registration', {
             msg: 'Registration Successful'
-        })
+        });
     } catch (err) {
-        console.log(err)
+        console.log(err);
         res.render('registration', {
             msg: 'User already exists or error occurred'
-        })
+        });
     }
 })
 
-// login
 app.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body
@@ -124,29 +83,21 @@ app.post('/login', async (req, res) => {
         if (!isMatch)
             return res.render('login', { msg: 'Wrong password' })
 
-        // SESSION SET
         req.session.key = email
-
         res.redirect('/')
-
     } catch (err) {
-        console.error(err)
-        res.send(err.message)
+        console.error(err);
+        res.send(err.message);
     }
 })
 
-// logout
 app.get('/logout', (req, res) => {
     req.session.destroy(() => {
         res.redirect('/login')
     })
 })
 
-app.get('/next', (req, res) => {
-    res.render('next')
-})
-
-// server
+//connect to server
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
