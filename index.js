@@ -11,16 +11,19 @@ require('dotenv').config({path:'./pass.env'})
 //connect database
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('Database Connected!'))
-    .catch((err) => console.log(err))
-
+    .catch((err) => {
+        console.error('DB Connection Failed:', err);
+        process.exit(1);  // Exit if DB fails
+    })
 //session
 app.use(session({
     secret: process.env.SESSION_SECRET || 'mysecret',
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: false,
-        sameSite: 'lax'
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: true,
+        sameSite: 'strict'
     }
 }))
 
@@ -53,9 +56,10 @@ app.post('/registration', async (req, res) => {
             msg: 'Registration Successful'
         });
     } catch (err) {
-        res.render('registration', {
-            msg: 'User already exists or error occurred'
-        });
+    console.log(err);
+    res.render('registration', {
+        msg: 'User already exists or error occurred'
+    });
     }
 })
 
@@ -75,8 +79,9 @@ app.post('/login', async (req, res) => {
         req.session.key = email
         res.redirect('/')
     } catch (err) {
-        res.send("Error occurred")
-    }
+    console.error(err);
+    res.send(err.message);
+}
 })
 
 app.get('/logout',(req,res)=>{
