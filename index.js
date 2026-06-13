@@ -36,7 +36,7 @@ app.use(session({
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.set('view engine', 'ejs')
-
+app.use(express.static('public'))
 // login middleware
 let isLogin = (req, res, next) => {
     if (req.session.key) {
@@ -57,6 +57,35 @@ app.get('/login', (req, res) => {
 // home route
 app.get('/', isLogin, (req, res) => {
     res.render('index')
+})
+
+// static file viewer route
+async function listStaticFiles(directory, base = '') {
+    const entries = await fs.readdir(directory, { withFileTypes: true })
+    const files = []
+
+    for (const entry of entries) {
+        const relPath = base ? path.posix.join(base, entry.name) : entry.name
+        const fullPath = path.join(directory, entry.name)
+
+        if (entry.isDirectory()) {
+            files.push(...await listStaticFiles(fullPath, relPath))
+        } else if (entry.isFile()) {
+            files.push(relPath.replace(/\\/g, '/'))
+        }
+    }
+
+    return files
+}
+
+app.get('/static-viewer', isLogin, async (req, res) => {
+    try {
+        const fileList = await listStaticFiles(path.join(__dirname, 'pubic'))
+        res.render('static-viewer', { files: fileList })
+    } catch (err) {
+        console.error('Static viewer error:', err)
+        res.status(500).send('Unable to load static file viewer')
+    }
 })
 
 // registration
@@ -106,6 +135,10 @@ app.get('/logout', (req, res) => {
     req.session.destroy(() => {
         res.redirect('/login')
     })
+})
+
+app.get('/next',(req,res)=>{
+    res.render('next')
 })
 
 // server
