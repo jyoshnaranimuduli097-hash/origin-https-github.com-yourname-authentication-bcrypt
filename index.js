@@ -56,7 +56,8 @@ app.get('/login', (req, res) => {
 
 // home route
 app.get('/', isLogin, (req, res) => {
-    res.sendFile('next.html',{root:__dirname})
+    res.send('Termi maa ki')
+    //res.sendFile('next.html',{root:__dirname})
 })
 
 // static file viewer route
